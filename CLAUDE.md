@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 There is no test runner, linter, or type checker configured. Verify changes by running the dev server and playing the game.
 
-[vite.config.js](vite.config.js) sets `base: './'`, so the build uses relative paths and runs from any sub-path. Files in `public/` are copied next to `index.html`; reference them through `import.meta.env.BASE_URL` (as `LETTER_URL` does), never with a leading `/`.
+[vite.config.js](vite.config.js) sets `base: './'`, so the build uses relative paths and runs from any sub-path. Files in `public/` are copied next to `index.html`; reference them through `import.meta.env.BASE_URL` (as `LETTER_URL` does), never with a leading `/`. `LETTER_URL` also appends `?v=__BUILD_ID__` (a `define` in vite.config.js that changes on every build), because GitHub Pages lets browsers cache files for 10 minutes and a replaced letter would otherwise show the old copy.
 
 Deployment: [.github/workflows/deploy.yml](.github/workflows/deploy.yml) builds on every push to `main` and publishes `dist/` to GitHub Pages. Everything in the repo, including `public/letter.pdf`, is then public.
 

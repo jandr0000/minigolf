@@ -91,7 +91,8 @@ const islands = { 1: spain, 2: uk };
 
 // the kid waits in the middle of Spain until the helicopter takes him to the United Kingdom
 const KID_KEY = 'minigolf.kid';
-const LETTER_URL = import.meta.env.BASE_URL + 'letter.pdf'; // BASE_URL keeps it working under a sub-path (GitHub Pages)
+// BASE_URL keeps it working under a sub-path (GitHub Pages); ?v= changes on every build so browsers don't show a cached old letter
+const LETTER_URL = import.meta.env.BASE_URL + 'letter.pdf?v=' + __BUILD_ID__;
 const kid = createKid(scene, { label: 'Hector' });
 function placeKid(at) {
   const s = (at === 'uk' ? uk : spain).kidSpot;
