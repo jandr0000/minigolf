@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Mini Golf</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+
+    <div id="labels"></div>
+
+    <section id="title" class="panel center">
+      <p class="eyebrow" id="titleEyebrow">Palm Island</p>
+      <h1>Mini Golf</h1>
+      <p class="sub" id="titleSub">3 holes &middot; sink the ball, avoid the water &mdash; and the bombs</p>
+      <div class="btns">
+        <button id="start" class="btn">Play Hole 1</button>
+        <button id="islandBtn" class="btn ghost hidden">Go to United Kingdom</button>
+      </div>
+      <p class="hint">Press anywhere, drag <b>back</b> from the ball and release to putt</p>
+    </section>
+
+    <header id="hud" class="hidden">
+      <div class="card">
+        <div class="row"><span class="k">Hole</span><span id="hudHole">1</span></div>
+        <div class="row"><span class="k">Par</span><span id="hudPar">3</span></div>
+        <div class="row hidden" id="hudLevelRow"><span class="k">Level</span><span id="hudLevel">Medium</span></div>
+        <div class="row big"><span class="k">Strokes</span><span id="hudStrokes">0</span></div>
+      </div>
+      <button id="overviewBtn" class="btn small ghost">Course view</button>
+    </header>
+
+    <div id="power" class="hidden"><div id="powerFill"></div></div>
+    <div id="toast"></div>
+
+    <div id="battleHud" class="hidden">
+      <div class="life enemy">
+        <span class="lbl" id="enemyLbl">Enemy gunship</span>
+        <div class="track"><div id="enemyFill" class="fill"></div></div>
+      </div>
+      <div class="life ally">
+        <span class="lbl" id="allyLbl">Your chopper</span>
+        <div class="track"><div id="allyFill" class="fill"></div></div>
+      </div>
+      <p class="keys" id="keysHint">Move <b>arrows / WASD</b> or drag &middot; Fire <b>SPACE</b></p>
+    </div>
+    <button id="fireBtn" class="btn fire hidden" type="button" tabindex="-1">Fire</button>
+
+    <section id="difficulty" class="panel center hidden">
+      <p class="eyebrow">Hole 3 &middot; enemy gunship</p>
+      <h2>Choose your level</h2>
+      <p class="sub">The level sets how fast the helicopter bombs the fairway while you putt.</p>
+      <div class="levels">
+        <button class="level" data-level="easy" type="button">
+          <b>Easy</b>
+          <span class="pips"><i class="on"></i><i></i><i></i></span>
+          <span>Slow bombs, long warning, one at a time</span>
+        </button>
+        <button class="level" data-level="medium" type="button">
+          <b>Medium</b>
+          <span class="pips"><i class="on"></i><i class="on"></i><i></i></span>
+          <span>The classic bombing run, two at a time</span>
+        </button>
+        <button class="level" data-level="hard" type="button">
+          <b>Hard</b>
+          <span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i></span>
+          <span>Fast, frequent bombs and barely any warning</span>
+        </button>
+      </div>
+      <button id="levelBack" class="btn ghost small" type="button">Back</button>
+    </section>
+
+    <section id="result" class="panel center hidden">
+      <p class="eyebrow" id="resultEyebrow">Hole 1 complete</p>
+      <h2 id="resultTitle">Birdie!</h2>
+      <p class="sub" id="resultSub">2 strokes &middot; par 3</p>
+      <div class="btns">
+        <button id="nextBtn" class="btn hidden">Next hole</button>
+        <button id="replayBtn" class="btn">Play again</button>
+        <button id="courseBtn" class="btn ghost">Course view</button>
+      </div>
+    </section>
+
+    <section id="letter" class="hidden">
+      <figure class="polaroid">
+        <iframe id="letterFrame" title="A letter from Hector" src="about:blank"></iframe>
+        <figcaption>A letter from Hector &middot; <a id="letterLink" href="/letter.pdf" target="_blank" rel="noopener">open the PDF</a></figcaption>
+      </figure>
+      <button id="letterBtn" class="btn" type="button">Continue</button>
+    </section>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
