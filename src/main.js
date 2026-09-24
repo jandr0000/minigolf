@@ -29,6 +29,7 @@ import { createBrawl } from './brawl.js';
 import { BALL_R, stepBall, launch, speedOf } from './physics.js';
 import { pointInPolygon } from './geometry.js';
 import { unlockAudio, sfx } from './audio.js';
+import { renderPdf } from './letter.js';
 
 const FOV = 0.8;
 const YAW = Math.PI;
@@ -448,16 +449,19 @@ function endBrawl(win) {
 }
 
 // After the hug: the letter from Hector, a PDF loaded from public/letter.pdf.
+let closeLetter = null;
 function showLetter() {
   game.state = 'letter';
-  $('letterFrame').src = LETTER_URL + '#toolbar=0&navpanes=0&view=FitH';
   $('letterLink').href = LETTER_URL;
   $('letter').classList.remove('hidden');
+  if (closeLetter) closeLetter();
+  closeLetter = renderPdf($('letterPages'), LETTER_URL);
 }
 
 function hideLetter() {
   $('letter').classList.add('hidden');
-  $('letterFrame').src = 'about:blank';
+  if (closeLetter) closeLetter();
+  closeLetter = null;
 }
 
 // Puts the kids back where the overview expects them once the windmill hole is left.
@@ -553,6 +557,8 @@ function startHole(h, level) {
   hole = h;
   game.island = h.island;
   if (h === warHole || warzone.phase !== 'parked') warzone.reset();
+  // every win on hole 3 flies the kid over from Spain, so a replay puts him back there to be picked up
+  if (h === warHole && game.kidAt !== 'spain') setKidAt('spain');
   if (h === brawlHole) {
     brawl.stage();
     brawlStaged = true;
@@ -628,15 +634,20 @@ function startTransit(next) {
   toast(pickup ? 'Off to pick up the kid...' : `Off to the ${ISLANDS[next.island].name}...`, 3200);
 }
 
-function arriveUk() {
-  unlockUk();
-  game.kidAt = 'uk';
+// Moves the kid to an island ('spain' | 'uk') and remembers it.
+function setKidAt(at) {
+  game.kidAt = at;
   try {
-    localStorage.setItem(KID_KEY, 'uk');
+    localStorage.setItem(KID_KEY, at);
   } catch {
     // progress just isn't remembered
   }
-  placeKid('uk');
+  placeKid(at);
+}
+
+function arriveUk() {
+  unlockUk();
+  setKidAt('uk');
   game.state = 'overview';
   game.island = 2;
   hole = firstHoleOf(2);
